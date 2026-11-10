@@ -27,7 +27,7 @@ jobs:
       - name: Prepare site bundle
         run: |
           mkdir -p _site/assets
-          cp index.html styles.css main.js robots.txt sitemap.xml favicon.ico CNAME .nojekyll site.webmanifest _site/
+          cp index.html styles.css main.js language.js robots.txt sitemap.xml favicon.ico CNAME .nojekyll site.webmanifest _site/
           cp -R assets/* _site/assets/
 
       - name: Setup Pages

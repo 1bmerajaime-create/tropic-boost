@@ -657,7 +657,7 @@ h2 {
 
 @media (min-width: 1000px) {
   .bowl-card {
-    flex-basis: 480px;
+    flex-basis: calc((100% - 2.7rem) / 3);
   }
 }
 
@@ -676,7 +676,7 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;
+  object-position: center 70%;
   transition: transform 0.6s var(--ease);
 }
 
@@ -823,7 +823,7 @@ h2 {
 
 @media (min-width: 1000px) {
   .event-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
