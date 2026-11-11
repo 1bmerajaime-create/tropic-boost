@@ -68,7 +68,7 @@
   "a11y.next": "Next",
   "a11y.bowls": "Açaí bowl varieties",
   "a11y.footer": "Footer navigation",
-  "image.hero": "Tropic Boost açaí bowl under event lights — nutrition and recovery for athletes",
+  "image.hero": "Tropic Boost açaí bowl with fruit, granola and peanut butter in front of our stand at a sports event",
   "image.sweet": "La Dulcecita — açaí with granola, mango, blueberries and almonds",
   "image.lotus": "La Lotus — açaí with granola, banana, blueberries, Lotus biscuits and spread",
   "image.tropical": "La Tropicoqueta — açaí with granola, banana, strawberries and peanut butter",

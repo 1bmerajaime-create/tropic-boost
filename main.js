@@ -63,13 +63,15 @@
     item.dataset.scrollReveal = String(index % 2 ? -1 : 1);
   });
   let revealFrame = 0;
+  const revealed = new WeakSet();
   const updateReveals = () => {
     revealFrame = 0;
     const loading = document.documentElement.classList.contains("is-loading");
     const positions = revealItems.map((item) => item.getBoundingClientRect().top);
     revealItems.forEach((item, index) => {
-      const progress = reducedMotion.matches ? 1 : loading ? 0 :
+      const progress = revealed.has(item) || reducedMotion.matches || (!loading && item.closest(".hero")) ? 1 : loading ? 0 :
         clamp((innerHeight * 0.94 - positions[index]) / Math.min(230, innerHeight * 0.3));
+      if (progress === 1) revealed.add(item);
       const eased = 1 - Math.pow(1 - progress, 3);
       item.style.setProperty("--scroll-opacity", String(clamp(progress * 1.5)));
       item.style.setProperty("--scroll-shift", `${(1 - eased) * Number(item.dataset.scrollReveal) * 60}px`);
@@ -124,28 +126,10 @@
     const cards = [...bowlRoot.querySelectorAll(".bowl-card")];
     let motion = null;
     let bowlFrame = 0;
+    let bowlsComplete = false;
+    let configuredWidth = innerWidth;
 
-    const updateBowls = () => {
-      bowlFrame = 0;
-      if (!motion) return;
-      const box = bowlRoot.getBoundingClientRect();
-      const progress = clamp((motion.top - box.top) / motion.travel);
-      const arrival = clamp((innerHeight * 0.9 - box.top) / (innerHeight * 0.9 - motion.top));
-      track.style.setProperty("--bowl-track-shift", `${-motion.overflow * progress}px`);
-      cards.forEach((card, index) => {
-        const entry = index === 0 ? arrival :
-          clamp((progress * (cards.length - 1) - (index - 1)) / 0.8);
-        const eased = 1 - Math.pow(1 - entry, 3);
-        const direction = index === 0 ? -1 : 1;
-        card.style.setProperty("--bowl-shift", `${(1 - eased) * motion.distance * direction}px`);
-        card.style.setProperty("--bowl-opacity", String(clamp(entry * 2)));
-      });
-    };
-    const queueBowls = () => {
-      if (!bowlFrame) bowlFrame = requestAnimationFrame(updateBowls);
-    };
-    const configureBowls = () => {
-      motion = null;
+    const clearBowlMotion = () => {
       bowlRoot.classList.remove("bowl-motion");
       bowlRoot.style.height = "";
       track.style.removeProperty("--bowl-track-shift");
@@ -153,6 +137,46 @@
         card.style.removeProperty("--bowl-shift");
         card.style.removeProperty("--bowl-opacity");
       });
+    };
+    const finishBowls = () => {
+      const { travel, overflow } = motion;
+      const position = scrollY;
+      bowlsComplete = true;
+      motion = null;
+      clearBowlMotion();
+      // Replace the translated row with native horizontal scrolling at the same view.
+      stage.scrollLeft = overflow;
+      // Removing the extra animation height keeps the visible page in place.
+      window.scrollTo({ top: Math.max(0, position - travel), behavior: "instant" });
+    };
+
+    const updateBowls = () => {
+      bowlFrame = 0;
+      if (!motion) return;
+      const box = bowlRoot.getBoundingClientRect();
+      const progress = clamp((motion.top - box.top) / motion.travel);
+      if (progress === 1) {
+        finishBowls();
+        return;
+      }
+      const arrival = clamp((innerHeight * 0.9 - box.top) / (innerHeight * 0.9 - motion.top));
+      track.style.setProperty("--bowl-track-shift", `${-motion.overflow * progress}px`);
+      cards.forEach((card, index) => {
+        const entry = index === 0 ? arrival :
+          clamp((progress * (cards.length - 1) - (index - 1)) / 0.8);
+        const eased = 1 - Math.pow(1 - entry, 3);
+        card.style.setProperty("--bowl-shift", `${(1 - eased) * motion.distance}px`);
+        card.style.setProperty("--bowl-opacity", String(clamp(entry * 2)));
+      });
+    };
+    const queueBowls = () => {
+      if (!bowlFrame) bowlFrame = requestAnimationFrame(updateBowls);
+    };
+    const configureBowls = () => {
+      if (bowlsComplete) return;
+      configuredWidth = innerWidth;
+      motion = null;
+      clearBowlMotion();
       if (reducedMotion.matches || innerHeight <= 650) return;
       bowlRoot.classList.add("bowl-motion");
       const top = parseFloat(getComputedStyle(stage).top);
@@ -181,7 +205,10 @@
       window.scrollTo({ top: start + next * motion.travel, behavior: "smooth" });
     });
     window.addEventListener("scroll", queueBowls, { passive: true });
-    window.addEventListener("resize", configureBowls);
+    window.addEventListener("resize", () => {
+      // Mobile browser bars resize the viewport during a swipe; keep that pass stable.
+      if (innerWidth !== configuredWidth || !motion) configureBowls();
+    });
     window.addEventListener("languagechange", configureBowls);
     window.addEventListener("tropic:ready", configureBowls);
     reducedMotion.addEventListener("change", configureBowls);

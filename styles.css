@@ -449,8 +449,7 @@ h2 {
   width: 100%;
   height: clamp(160px, 42vw, 230px);
   object-fit: cover;
-  /* Favor the glowing palm logo + keep the bowl smaller in frame */
-  object-position: 22% 18%;
+  object-position: center 45%;
 }
 
 .hero-fade {
@@ -523,6 +522,56 @@ h2 {
   margin-top: 1.2rem;
 }
 
+@media (max-width: 879px) {
+  .hero {
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero-stage {
+    min-height: max(620px, calc(100svh - var(--header-h)));
+    display: grid;
+    align-items: end;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    object-position: center 38%;
+  }
+
+  .hero-fade {
+    inset: 0;
+    height: auto;
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 6, 24, 0.05) 0%,
+      rgba(14, 6, 24, 0.12) 28%,
+      rgba(14, 6, 24, 0.78) 52%,
+      var(--purple-deep) 78%
+    );
+  }
+
+  .hero-panel {
+    padding: 2.5rem 1.4rem 2rem;
+    background: transparent;
+    backdrop-filter: none;
+    border: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 7.2vw, 2.65rem);
+  }
+
+  .hero-lead {
+    color: var(--lavender-bright);
+  }
+}
+
 @media (min-width: 880px) {
   .hero {
     margin-top: 1rem;
@@ -540,7 +589,7 @@ h2 {
     z-index: 0;
     width: 100%;
     height: 100%;
-    object-position: 72% 42%;
+    object-position: center 48%;
     transform: scale(1.04);
   }
 
