@@ -115,6 +115,15 @@ ul {
   margin: auto;
 }
 
+.loader-percentage {
+  margin-top: 1rem;
+  color: var(--lavender-bright);
+  font-size: 1.25rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
 .loader-bowl {
   display: block;
   width: 100%;

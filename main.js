@@ -1,12 +1,30 @@
 (() => {
   if (document.documentElement.classList.contains("is-loading")) {
+    const percentage = document.getElementById("loader-percentage");
+    const started = performance.now();
+    let completed = false;
+    let previous = -1;
+    const countUp = (now) => {
+      if (completed || !document.documentElement.classList.contains("is-loading")) return;
+      const elapsed = now - started;
+      // Follow the ingredient sequence, reserving completion for essential assets.
+      const value = Math.floor(elapsed <= 6200 ? elapsed / 6200 * 95 :
+        95 + 4 * (1 - Math.exp(-(elapsed - 6200) / 1200)));
+      if (percentage && value !== previous) percentage.textContent = `${value}%`;
+      previous = value;
+      requestAnimationFrame(countUp);
+    };
+    requestAnimationFrame(countUp);
     // Let the full ingredient sequence play while essential page assets load.
     const sequence = new Promise((resolve) => setTimeout(resolve, 6200));
     const images = [...document.querySelectorAll(".hero-bg, .header-logo")]
       .map((image) => image.decode().catch(() => {}));
     const fonts = document.fonts?.ready || Promise.resolve();
     Promise.all([sequence, fonts, ...images]).then(() => {
-      window.dispatchEvent(new Event("tropic:ready"));
+      completed = true;
+      if (percentage) percentage.textContent = "100%";
+      // Give the final value a moment to register before the overlay fades.
+      setTimeout(() => window.dispatchEvent(new Event("tropic:ready")), 220);
     });
   } else {
     document.getElementById("site-loader")?.remove();
@@ -98,7 +116,7 @@
     queueStack();
   }
 
-  // Keep the bowls in one row; scrolling carries the row across small screens.
+  // Bring each bowl in from a screen edge, into its unchanged place in the row.
   const bowlRoot = document.querySelector("[data-bowl-scroll]");
   if (bowlRoot) {
     const stage = bowlRoot.querySelector(".bowl-stage");
@@ -115,10 +133,11 @@
       const arrival = clamp((innerHeight * 0.9 - box.top) / (innerHeight * 0.9 - motion.top));
       track.style.setProperty("--bowl-track-shift", `${-motion.overflow * progress}px`);
       cards.forEach((card, index) => {
-        const entry = motion.overflow > 1 ? arrival :
-          index === 0 ? arrival : clamp((progress * 2 - (index - 1)) / 0.8);
+        const entry = index === 0 ? arrival :
+          clamp((progress * (cards.length - 1) - (index - 1)) / 0.8);
         const eased = 1 - Math.pow(1 - entry, 3);
-        card.style.setProperty("--bowl-shift", `${(1 - eased) * 70}px`);
+        const direction = index === 0 ? -1 : 1;
+        card.style.setProperty("--bowl-shift", `${(1 - eased) * motion.distance * direction}px`);
         card.style.setProperty("--bowl-opacity", String(clamp(entry * 2)));
       });
     };
@@ -149,7 +168,7 @@
       const overflow = Math.max(0, rowWidth - track.getBoundingClientRect().width);
       const travel = Math.round(Math.max(innerHeight * 1.35, overflow));
       bowlRoot.style.height = `${height + travel}px`;
-      motion = { top, travel, overflow };
+      motion = { top, travel, overflow, distance: innerWidth + 40 };
       updateBowls();
     };
     track.addEventListener("keydown", (event) => {

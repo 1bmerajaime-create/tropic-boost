@@ -15,6 +15,8 @@
         finished = true;
         clearTimeout(fallback);
         const loader = document.getElementById("site-loader");
+        const percentage = document.getElementById("loader-percentage");
+        if (percentage) percentage.textContent = "100%";
         loader?.setAttribute("aria-hidden", "true");
         root.classList.add("loader-leaving");
         root.classList.remove("is-loading");
@@ -59,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=32" />
+  <link rel="stylesheet" href="styles.css?v=33" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -157,6 +159,7 @@
             <path d="M79 247C79 267 151 284 240 284S401 267 401 247" stroke-width="7"/>
           </svg>
       </div>
+      <p class="loader-percentage" id="loader-percentage" aria-hidden="true">0%</p>
     </div>
   </div>
   <header class="site-header" id="header">
@@ -410,6 +413,6 @@
   </footer>
 
   <script src="language.js?v=10"></script>
-  <script src="main.js?v=7"></script>
+  <script src="main.js?v=9"></script>
 </body>
 </html>
