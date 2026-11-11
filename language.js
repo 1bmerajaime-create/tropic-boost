@@ -1,6 +1,7 @@
 /* Authored English translations; the HTML supplies the Spanish version. */
 (() => {
   const english = {
+  "loader.label": "Preparing an açaí bowl",
   "nav.about": "About us",
   "nav.bowls": "Açaí bowls",
   "nav.events": "Events",
@@ -47,6 +48,15 @@
   "events.padel": "Açaí bowls and fresh energy between matches",
   "events.equestrian.title": "Horse competitions",
   "events.equestrian": "Healthy catering for riders, teams and spectators",
+  "events.hyrox.title": "Hyrox",
+  "events.hyrox.detail": "Freshly made açaí bowls right at the competition. A refreshing break for athletes, teams and supporters between stations and after the finish.",
+  "events.crossfit.title": "CrossFit",
+  "events.crossfit.detail": "A boost for every WOD. Bowls with fruit and granola to enjoy between heats, refuel after the effort and share the atmosphere of the box.",
+  "events.hybrid.detail": "When competition combines disciplines, we keep up with every pace. Açaí and healthy catering for participants and spectators throughout the day.",
+  "events.running.title": "Running & trail",
+  "events.running.detail": "From the start line to the finish, we add flavour to the effort. Fresh bowls for runners, cyclists and triathletes, with a stand that is part of the event experience.",
+  "events.padel.detail": "On and off the court, every match deserves a good break. Freshly made açaí bowls for players, teams and everyone cheering them on.",
+  "events.equestrian.detail": "A fresh meeting point at the competition. Our açaí stand joins horse competitions and riding events for riders, teams and supporters.",
   "cta.title": "Looking for açaí at your next event?",
   "cta.copy": "Book sports catering or an açaí stand for your event in Madrid, Barcelona, Valencia, Málaga, Seville and beyond.",
   "footer.copy": "© 2026 Tropic Boost. Açaí bowls, sports nutrition and healthy catering for events. Sports nutrition · Healthy catering · Performance nutrition.",

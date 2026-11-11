@@ -3,6 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (() => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const root = document.documentElement;
+      root.classList.add("is-loading");
+      root.setAttribute("aria-busy", "true");
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(fallback);
+        const loader = document.getElementById("site-loader");
+        loader?.setAttribute("aria-hidden", "true");
+        root.classList.add("loader-leaving");
+        root.classList.remove("is-loading");
+        root.removeAttribute("aria-busy");
+        setTimeout(() => {
+          loader?.remove();
+          root.classList.remove("loader-leaving");
+        }, 450);
+      };
+      // Always reveal the page, even if a resource or the main script fails.
+      const fallback = setTimeout(finish, 10000);
+      window.addEventListener("tropic:ready", finish, { once: true });
+      window.addEventListener("pageshow", (event) => {
+        if (event.persisted) finish();
+      });
+    })();
+  </script>
   <title data-i18n="meta.title">Tropic Boost | Bowls de açaí y nutrición deportiva en Hyrox, CrossFit y carreras</title>
   <meta name="description" content="Bowls de açaí para deportistas en eventos: Hyrox, CrossFit, hybrid y carreras. Catering deportivo y recovery food preparados al momento. Nutrición deportiva en Madrid, Barcelona, Valencia, Málaga y Sevilla." data-i18n-content="meta.description" />
   <meta name="keywords" content="açaí, acai, açaí bowl, bowl de açaí, açaí deportivo, açaí para deportistas, açaí post entrenamiento, açaí recuperación, nutrición deportiva, alimentación deportiva, catering deportivo, stand de açaí, comida para crossfit, comida para hyrox, nutrición hyrox, nutrición crossfit, recovery food, recuperación deportiva, açaí madrid, açaí barcelona, açaí valencia, açaí málaga, açaí sevilla" data-i18n-content="meta.keywords" />
@@ -30,7 +59,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=24" />
+  <link rel="stylesheet" href="styles.css?v=32" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,6 +87,78 @@
   </script>
 </head>
 <body>
+  <div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="Preparando un bowl de açaí" data-i18n-aria-label="loader.label">
+    <div class="loader-content">
+      <div class="loader-scene" aria-hidden="true">
+        <svg class="loader-bowl" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+              <clipPath id="loader-cup-clip"><path d="M79 247H401C390 351 328 420 240 420S90 351 79 247Z"/></clipPath>
+              <g id="loader-banana-slice">
+                <path d="M-42-4C-44-29-22-43 5-41C30-39 46-22 43 3C40 28 21 44-5 41C-31 39-43 21-42-4Z" fill="#ffe4a0" stroke-width="6"/>
+                <path d="M-33-3C-34-24-17-33 4-32C24-30 35-17 34 2C32 22 17 34-3 32C-23 31-33 16-33-3Z" fill="#fff1c6" stroke="none"/>
+                <ellipse cx="-10" cy="-9" rx="3" ry="7" transform="rotate(-35 -10 -9)" fill="currentColor" stroke="none"/>
+                <ellipse cx="7" cy="-10" rx="3" ry="7" transform="rotate(30 7 -10)" fill="currentColor" stroke="none"/>
+                <ellipse cx="12" cy="6" rx="3" ry="7" transform="rotate(85 12 6)" fill="currentColor" stroke="none"/>
+                <ellipse cx="-8" cy="9" rx="3" ry="6" transform="rotate(-65 -8 9)" fill="currentColor" stroke="none"/>
+              </g>
+              <g id="loader-strawberry-piece">
+                <path d="M-39-8C-42-29-20-42-2-35C18-44 40-28 40-8C39 21 14 57 3 59C-10 61-36 24-39-8Z" fill="#ef776f" stroke-width="6"/>
+                <path d="M-12-16C-10-29 10-28 13-14C17 7 7 35 3 36C-2 36-15 4-12-16Z" fill="#fff0d4" stroke="none"/>
+                <path d="M-26-38C-43-45-29-51-18-53C-32-70-21-71-9-62C-11-82 3-77 7-60C20-78 29-64 20-53C36-57 41-45 22-39L-26-38Z" fill="#78a569" stroke-width="6"/>
+                <path d="M-26-12L-23-6M24-11L21-5M-23 12L-19 17M21 13L18 19M-10 33L-7 37M12 35L9 40" stroke-width="5"/>
+              </g>
+              <g id="loader-oat">
+                <path d="M-10-3C-8-10 5-12 11-4C17 4 5 13-5 10C-12 8-15 2-10-3Z" fill="#d8a45d" stroke-width="4"/>
+                <path d="M-4 3L5-1" stroke-width="3"/>
+              </g>
+            </defs>
+            <g stroke="none">
+              <circle cx="362" cy="98" r="13" fill="var(--lavender)"/>
+              <circle cx="414" cy="143" r="8" fill="var(--accent)"/>
+              <circle cx="62" cy="344" r="7" fill="var(--accent)"/>
+              <circle cx="92" cy="395" r="13" fill="var(--lavender)"/>
+              <circle cx="374" cy="397" r="9" fill="var(--purple-mid)"/>
+            </g>
+            <path d="M79 247H401C390 351 328 420 240 420S90 351 79 247Z" fill="var(--purple)"/>
+            <g clip-path="url(#loader-cup-clip)" stroke="none">
+              <path d="M350 253H403C392 366 319 423 233 421C307 398 335 334 350 253Z" fill="#63407c"/>
+              <path d="M96 268C168 297 286 295 358 268C310 308 179 319 104 281Z" fill="var(--lavender)"/>
+            </g>
+            <ellipse cx="240" cy="247" rx="161" ry="34" fill="var(--lavender-bright)"/>
+            <ellipse class="loader-acai-top" cx="240" cy="247" rx="149" ry="26" fill="#63407c" stroke="none"/>
+            <g class="loader-acai-fill" fill="var(--purple-mid)" stroke="none">
+              <path d="M110 251C161 233 203 261 252 245S334 241 371 247C333 263 270 276 238 272C174 274 130 267 110 251Z"/>
+              <path d="M118 249C148 228 176 240 187 244C159 239 143 257 127 258Z"/>
+            </g>
+            <g class="loader-granola loader-ingredient">
+              <use href="#loader-oat" transform="translate(133 237) rotate(-30)"/>
+              <use href="#loader-oat" transform="translate(159 222) rotate(15)"/>
+              <use href="#loader-oat" transform="translate(182 235) rotate(-25)"/>
+              <use href="#loader-oat" transform="translate(160 255) rotate(25)"/>
+              <use href="#loader-oat" transform="translate(204 261) rotate(-18)"/>
+              <use href="#loader-oat" transform="translate(239 274) rotate(8)"/>
+              <use href="#loader-oat" transform="translate(278 270) rotate(-18)"/>
+              <use href="#loader-oat" transform="translate(320 254) rotate(16)"/>
+            </g>
+            <g class="loader-bananas loader-ingredient">
+              <use href="#loader-banana-slice" transform="translate(267 195) rotate(-18)"/>
+              <use href="#loader-banana-slice" transform="translate(313 222) rotate(16)"/>
+            </g>
+            <g class="loader-strawberries loader-ingredient">
+              <use href="#loader-strawberry-piece" transform="translate(201 184) rotate(-7) scale(.9)"/>
+              <use href="#loader-strawberry-piece" transform="translate(148 224) rotate(-24)"/>
+            </g>
+            <g class="loader-peanut loader-ingredient">
+              <path d="M197 245C193 232 196 216 205 204C214 191 230 186 244 189C263 191 279 207 280 225C283 232 282 240 278 246C285 255 276 264 265 261C258 271 246 268 240 264C231 272 219 268 214 263C202 267 191 258 197 245Z" fill="#dea45e" stroke-width="6"/>
+              <path d="M251 195C271 204 279 224 274 240C271 250 260 258 246 260C259 249 265 233 261 218C259 208 255 201 251 195Z" fill="#bd8049" stroke="none"/>
+              <path d="M207 224C210 207 227 197 240 201" stroke="#f6d4a0" stroke-width="8"/>
+              <path d="M209 241C215 234 225 235 230 239M240 215C245 214 250 217 252 222" stroke="#bd8049" stroke-width="4"/>
+            </g>
+            <path d="M79 247C79 267 151 284 240 284S401 267 401 247" stroke-width="7"/>
+          </svg>
+      </div>
+    </div>
+  </div>
   <header class="site-header" id="header">
     <a href="#hero" class="header-brand" aria-label="Tropic Boost — bowls de açaí y nutrición deportiva" data-i18n-aria-label="a11y.brand">
       <img src="assets/logo-horizontal.png?v=14" alt="Tropic Boost" class="header-logo" />
@@ -151,54 +252,45 @@
           </p>
         </div>
 
-        <div class="carousel reveal" data-carousel>
-          <div class="carousel-toolbar">
-            <div class="carousel-nav">
-              <button type="button" class="carousel-btn" data-carousel-prev aria-label="Anterior" data-i18n-aria-label="a11y.previous">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6L9 12l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <button type="button" class="carousel-btn" data-carousel-next aria-label="Siguiente" data-i18n-aria-label="a11y.next">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+        <div class="bowl-scroll" data-bowl-scroll>
+          <div class="bowl-stage">
+            <div class="bowl-track" tabindex="0" role="list" aria-label="Tipos de açaí bowl" data-i18n-aria-label="a11y.bowls">
+              <article class="bowl-card" role="listitem">
+                <div class="bowl-card-media">
+                  <img src="assets/la-dulcecita.webp?v=2" width="1092" height="1440" alt="La Dulcecita — açaí con granola, mango, arándanos y almendras" data-i18n-alt="image.sweet" loading="lazy" />
+                </div>
+                <div class="bowl-card-body">
+                  <p class="bowl-meta" data-i18n="bowl.sweet.meta">Dulce · Sweet boost</p>
+                  <h3>La Dulcecita</h3>
+                  <p data-i18n="bowl.sweet.copy">Açaí con granola, mango, arándanos y almendras. Una combinación dulce y crujiente para disfrutar cada cucharada.</p>
+                  <ul class="bowl-tags"><li data-i18n="ingredient.granola">Granola</li><li data-i18n="ingredient.mango">Mango</li><li data-i18n="ingredient.blueberry">Arándanos</li><li data-i18n="ingredient.almond">Almendras</li></ul>
+                </div>
+              </article>
+
+              <article class="bowl-card" role="listitem">
+                <div class="bowl-card-media">
+                  <img src="assets/la-lotus.webp" width="1092" height="1440" alt="La Lotus — açaí con granola, plátano, arándanos, galleta y crema Lotus" data-i18n-alt="image.lotus" loading="lazy" />
+                </div>
+                <div class="bowl-card-body">
+                  <p class="bowl-meta">Lotus · Crunch</p>
+                  <h3>La Lotus</h3>
+                  <p data-i18n="bowl.lotus.copy">Açaí con granola, plátano, arándanos, galleta y crema Lotus. Dulce, crujiente y con ese sabor a galleta que enamora.</p>
+                  <ul class="bowl-tags"><li data-i18n="ingredient.banana">Plátano</li><li data-i18n="ingredient.blueberry">Arándanos</li><li data-i18n="ingredient.lotusCookie">Galleta Lotus</li><li data-i18n="ingredient.lotusSpread">Crema Lotus</li></ul>
+                </div>
+              </article>
+
+              <article class="bowl-card" role="listitem">
+                <div class="bowl-card-media">
+                  <img src="assets/la-tropicoqueta.webp?v=2" width="1092" height="1440" alt="La Tropicoqueta — açaí con granola, plátano, fresa y crema de cacahuete" data-i18n-alt="image.tropical" loading="lazy" />
+                </div>
+                <div class="bowl-card-body">
+                  <p class="bowl-meta">Tropical · Pre / mid</p>
+                  <h3>La Tropicoqueta</h3>
+                  <p data-i18n="bowl.tropical.copy">Açaí con granola, plátano, fresa y crema de cacahuete. Fruta fresca y un toque cremoso para cargar energía.</p>
+                  <ul class="bowl-tags"><li data-i18n="ingredient.granola">Granola</li><li data-i18n="ingredient.banana">Plátano</li><li data-i18n="ingredient.strawberry">Fresa</li><li data-i18n="ingredient.peanut">Crema de cacahuete</li></ul>
+                </div>
+              </article>
             </div>
-          </div>
-
-          <div class="carousel-track" data-carousel-track tabindex="0" role="list" aria-label="Tipos de açaí bowl" data-i18n-aria-label="a11y.bowls">
-            <article class="bowl-card" role="listitem">
-              <div class="bowl-card-media">
-                <img src="assets/la-dulcecita.webp?v=2" width="1092" height="1440" alt="La Dulcecita — açaí con granola, mango, arándanos y almendras" data-i18n-alt="image.sweet" loading="lazy" />
-              </div>
-              <div class="bowl-card-body">
-                <p class="bowl-meta" data-i18n="bowl.sweet.meta">Dulce · Sweet boost</p>
-                <h3>La Dulcecita</h3>
-                <p data-i18n="bowl.sweet.copy">Açaí con granola, mango, arándanos y almendras. Una combinación dulce y crujiente para disfrutar cada cucharada.</p>
-                <ul class="bowl-tags"><li data-i18n="ingredient.granola">Granola</li><li data-i18n="ingredient.mango">Mango</li><li data-i18n="ingredient.blueberry">Arándanos</li><li data-i18n="ingredient.almond">Almendras</li></ul>
-              </div>
-            </article>
-
-            <article class="bowl-card" role="listitem">
-              <div class="bowl-card-media">
-                <img src="assets/la-lotus.webp" width="1092" height="1440" alt="La Lotus — açaí con granola, plátano, arándanos, galleta y crema Lotus" data-i18n-alt="image.lotus" loading="lazy" />
-              </div>
-              <div class="bowl-card-body">
-                <p class="bowl-meta">Lotus · Crunch</p>
-                <h3>La Lotus</h3>
-                <p data-i18n="bowl.lotus.copy">Açaí con granola, plátano, arándanos, galleta y crema Lotus. Dulce, crujiente y con ese sabor a galleta que enamora.</p>
-                <ul class="bowl-tags"><li data-i18n="ingredient.banana">Plátano</li><li data-i18n="ingredient.blueberry">Arándanos</li><li data-i18n="ingredient.lotusCookie">Galleta Lotus</li><li data-i18n="ingredient.lotusSpread">Crema Lotus</li></ul>
-              </div>
-            </article>
-
-            <article class="bowl-card" role="listitem">
-              <div class="bowl-card-media">
-                <img src="assets/la-tropicoqueta.webp?v=2" width="1092" height="1440" alt="La Tropicoqueta — açaí con granola, plátano, fresa y crema de cacahuete" data-i18n-alt="image.tropical" loading="lazy" />
-              </div>
-              <div class="bowl-card-body">
-                <p class="bowl-meta">Tropical · Pre / mid</p>
-                <h3>La Tropicoqueta</h3>
-                <p data-i18n="bowl.tropical.copy">Açaí con granola, plátano, fresa y crema de cacahuete. Fruta fresca y un toque cremoso para cargar energía.</p>
-                <ul class="bowl-tags"><li data-i18n="ingredient.granola">Granola</li><li data-i18n="ingredient.banana">Plátano</li><li data-i18n="ingredient.strawberry">Fresa</li><li data-i18n="ingredient.peanut">Crema de cacahuete</li></ul>
-              </div>
-            </article>
           </div>
         </div>
       </div>
@@ -232,47 +324,59 @@
           </p>
         </div>
 
-        <div class="event-grid">
-          <article class="event-card reveal">
-            <img src="assets/event-hyrox.png?v=3" alt="Competición Hyrox en arena — ambiente de evento" data-i18n-alt="image.hyrox" loading="lazy" />
+        <div class="event-stack">
+          <article class="event-card" style="--card-index: 0">
+            <span class="event-card-number" aria-hidden="true">01</span>
             <div class="event-card-body">
-              <h3>Hyrox nutrition</h3>
-              <p data-i18n="events.hyrox">Comida para Hyrox y recovery entre estaciones</p>
+              <span class="event-card-index" aria-hidden="true">01 / 06</span>
+              <h3 data-i18n="events.hyrox.title">Hyrox</h3>
+              <p class="event-card-subtitle" data-i18n="events.hyrox">Comida para Hyrox y recovery entre estaciones</p>
+              <p class="event-card-description" data-i18n="events.hyrox.detail">Llevamos bowls de açaí preparados al momento a la zona de competición. Una pausa fresca para atletas, equipos y acompañantes entre estaciones y al terminar la prueba.</p>
             </div>
           </article>
-          <article class="event-card reveal delay-1">
-            <img src="assets/event-crossfit.png?v=3" alt="Competición CrossFit en box — ambiente de evento" data-i18n-alt="image.crossfit" loading="lazy" />
+          <article class="event-card" style="--card-index: 1">
+            <span class="event-card-number" aria-hidden="true">02</span>
             <div class="event-card-body">
-              <h3>CrossFit nutrition</h3>
-              <p data-i18n="events.crossfit">Comida para CrossFit y post-WOD fuel</p>
+              <span class="event-card-index" aria-hidden="true">02 / 06</span>
+              <h3 data-i18n="events.crossfit.title">CrossFit</h3>
+              <p class="event-card-subtitle" data-i18n="events.crossfit">Comida para CrossFit y post-WOD fuel</p>
+              <p class="event-card-description" data-i18n="events.crossfit.detail">Un boost para cada WOD. Bowls con fruta y granola para disfrutar entre heats, recuperar después del esfuerzo y compartir el ambiente del box.</p>
             </div>
           </article>
-          <article class="event-card reveal">
-            <img src="assets/event-hybrid.png?v=3" alt="Carrera hybrid / triathlon — zona de transición" data-i18n-alt="image.hybrid" loading="lazy" />
+          <article class="event-card" style="--card-index: 2">
+            <span class="event-card-number" aria-hidden="true">03</span>
             <div class="event-card-body">
-              <h3 data-i18n="events.hybrid.title">Hybrid / híbrido</h3>
-              <p data-i18n="events.hybrid">Alimentación deportiva entre bloques de carrera</p>
+              <span class="event-card-index" aria-hidden="true">03 / 06</span>
+              <h3 data-i18n="events.hybrid.title">Eventos híbridos</h3>
+              <p class="event-card-subtitle" data-i18n="events.hybrid">Alimentación deportiva entre bloques de carrera</p>
+              <p class="event-card-description" data-i18n="events.hybrid.detail">Cuando la competición combina disciplinas, acompañamos cada ritmo. Açaí y catering saludable para participantes y público durante toda la jornada.</p>
             </div>
           </article>
-          <article class="event-card reveal delay-1">
-            <img src="assets/event-carrera.png?v=3" alt="Meta de carrera popular — ambiente de evento" data-i18n-alt="image.running" loading="lazy" />
+          <article class="event-card" style="--card-index: 3">
+            <span class="event-card-number" aria-hidden="true">04</span>
             <div class="event-card-body">
-              <h3>Running &amp; trail</h3>
-              <p data-i18n="events.running">Comida para runners, ciclistas y triatletas en meta</p>
+              <span class="event-card-index" aria-hidden="true">04 / 06</span>
+              <h3 data-i18n="events.running.title">Running &amp; trail</h3>
+              <p class="event-card-subtitle" data-i18n="events.running">Comida para runners, ciclistas y triatletas en meta</p>
+              <p class="event-card-description" data-i18n="events.running.detail">De la salida a la meta, ponemos el sabor al esfuerzo. Bowls frescos para corredores, ciclistas y triatletas, con un stand que forma parte de la experiencia del evento.</p>
             </div>
           </article>
-          <article class="event-card reveal">
-            <img src="assets/event-padel.webp" width="900" height="1200" alt="Jugador de pádel preparando un golpe en la pista" data-i18n-alt="image.padel" loading="lazy" />
+          <article class="event-card" style="--card-index: 4">
+            <span class="event-card-number" aria-hidden="true">05</span>
             <div class="event-card-body">
+              <span class="event-card-index" aria-hidden="true">05 / 06</span>
               <h3 data-i18n="events.padel.title">Torneos de pádel</h3>
-              <p data-i18n="events.padel">Bowls de açaí y energía fresca entre partidos</p>
+              <p class="event-card-subtitle" data-i18n="events.padel">Bowls de açaí y energía fresca entre partidos</p>
+              <p class="event-card-description" data-i18n="events.padel.detail">Dentro y fuera de la pista, cada partido merece un buen descanso. Bowls de açaí preparados al momento para jugadores, equipos y quienes vienen a animar.</p>
             </div>
           </article>
-          <article class="event-card reveal delay-1">
-            <img src="assets/event-equestrian.webp" width="900" height="1200" alt="Jinete y caballo superando un obstáculo en una prueba de salto" data-i18n-alt="image.equestrian" loading="lazy" />
+          <article class="event-card" style="--card-index: 5">
+            <span class="event-card-number" aria-hidden="true">06</span>
             <div class="event-card-body">
+              <span class="event-card-index" aria-hidden="true">06 / 06</span>
               <h3 data-i18n="events.equestrian.title">Competiciones hípicas</h3>
-              <p data-i18n="events.equestrian">Catering saludable para jinetes, equipos y público</p>
+              <p class="event-card-subtitle" data-i18n="events.equestrian">Catering saludable para jinetes, equipos y público</p>
+              <p class="event-card-description" data-i18n="events.equestrian.detail">Un punto de encuentro fresco en la competición. Llevamos nuestro stand de açaí a concursos y jornadas hípicas para jinetes, equipos y acompañantes.</p>
             </div>
           </article>
         </div>
@@ -305,7 +409,7 @@
     </p>
   </footer>
 
-  <script src="language.js?v=6"></script>
-  <script src="main.js"></script>
+  <script src="language.js?v=10"></script>
+  <script src="main.js?v=7"></script>
 </body>
 </html>
