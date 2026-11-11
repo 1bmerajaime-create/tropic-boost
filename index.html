@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
     (() => {
+      const navigation = performance.getEntriesByType("navigation")[0];
+      if (navigation?.type === "reload") {
+        history.scrollRestoration = "manual";
+        // Clear the previous section before its anchor can restore the scroll position.
+        if (location.hash) history.replaceState(history.state, "", location.pathname + location.search);
+        const startAtTop = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        startAtTop();
+        document.addEventListener("DOMContentLoaded", startAtTop, { once: true });
+        window.addEventListener("pageshow", startAtTop, { once: true });
+        window.addEventListener("pagehide", () => {
+          history.scrollRestoration = "auto";
+        }, { once: true });
+      }
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const root = document.documentElement;
       root.classList.add("is-loading");
@@ -61,7 +74,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=35" />
+  <link rel="stylesheet" href="styles.css?v=37" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -152,12 +165,14 @@
               <use href="#loader-oat" transform="translate(397 265) rotate(32) scale(1.35)"/>
             </g>
             <g class="loader-strawberries loader-ingredient">
-              <use href="#loader-strawberry-piece" transform="translate(130 220) rotate(-16) scale(.92)"/>
-              <use href="#loader-strawberry-piece" transform="translate(352 235) rotate(18) scale(.8)"/>
+              <use href="#loader-strawberry-piece" transform="translate(345 200) rotate(8) scale(.75)"/>
+              <use href="#loader-strawberry-piece" transform="translate(379 241) rotate(22) scale(.8)"/>
+              <use href="#loader-strawberry-piece" transform="translate(307 247) rotate(-12) scale(.85)"/>
             </g>
             <g class="loader-bananas loader-ingredient">
-              <use href="#loader-banana-slice" transform="translate(172 258) rotate(-16)"/>
-              <use href="#loader-banana-slice" transform="translate(310 256) rotate(14)"/>
+              <use href="#loader-banana-slice" transform="translate(139 215) rotate(8) scale(.87)"/>
+              <use href="#loader-banana-slice" transform="translate(106 253) rotate(-18) scale(.92)"/>
+              <use href="#loader-banana-slice" transform="translate(173 257) rotate(16) scale(.94)"/>
             </g>
             <g class="loader-peanut loader-ingredient">
               <g transform="translate(5 28)">

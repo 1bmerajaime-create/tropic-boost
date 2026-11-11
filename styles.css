@@ -111,7 +111,7 @@ ul {
 }
 
 .loader-scene {
-  width: min(82vw, 350px, 62svh);
+  width: min(53vw, 224px, 40svh);
   margin: auto;
 }
 
